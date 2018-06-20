@@ -6,12 +6,22 @@ import './App.css';
 class App extends Component {
   // Initialize state
   state = {
-    message: ''
+    message: '',
+    sensor: {}
   }
 
   // Fetch passwords after first mount
   componentDidMount() {
-    this.getHi();
+    this.newSensor();
+  }
+
+  newSensor = () => {
+    if (window.DeviceOrientationEvent) {
+      window.addEventListener('deviceorientation', (e) => {
+        const sensor = {a: e.alpha, b: e.beta, g: e.gamma};
+        this.setState({sensor});
+      });
+    }
   }
 
   getHi = () => {
@@ -25,10 +35,12 @@ class App extends Component {
 
   render() {
     const { message } = this.state;
+    const { sensor } = this.state;
 
     return (
       <div className="App">
-        <h1>{message} welcome livelive</h1>
+        <h1>welcome gyroscope</h1>
+        <p>{JSON.stringify(sensor)}</p>
       </div>
     );
   }
